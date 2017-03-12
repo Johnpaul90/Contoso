@@ -1,0 +1,67 @@
+﻿@model ContosoUniversity.Models.Student
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Student</h4>
+    <hr />
+    <dl class="dl-horizontal" id="myForm2">
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnrollmentDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnrollmentDate)
+        </dd>
+
+    </dl>
+
+    <form>
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default main-color-bg" id="btnSubmit2" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $("#btnSubmit2").click(function () {
+            //  $("#loaderDiv").show();
+
+
+
+            var formData = $("#myForm2").serialize();
+
+
+            $.ajax({
+                type: "POST",
+                url: "/Students/Delete",
+                data: formData,
+                success: function () {
+
+                    $("#loaderDiv").hide();
+                    $("#myModal2").modal("hide");
+                }
+
+            });
+        });
+    });
+</script>

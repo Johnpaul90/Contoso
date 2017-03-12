@@ -1,0 +1,152 @@
+﻿@model PagedList.IPagedList<ContosoUniversity.Models.Student>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Students";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading text-center main-color-bg">
+        Students 
+    </div>
+    <div class="panel-body">
+       
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@using (Html.BeginForm("Index", "Students", FormMethod.Get))
+{<p>
+            Find by Name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <input type="submit" class="btn btn-default" value="Search" />
+        </p>
+}
+
+
+            <table class="table table-striped table-hover">
+                <tr>
+                    <th>
+                        @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+                    </th>
+                    <th>
+                        First Name
+                    </th>
+                    <th>
+                        @Html.ActionLink("Date Enrolled", "Index", new { sortOrder = ViewBag.DateSortParm })
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EnrollmentDate)
+                        </td>
+                        <td>
+                            <a href="/Students/Edit1" data-toggle="modal" data-target="#myModal" onclick="AddEdit(@item.ID)">Edit</a>|
+                            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                            <a href="/Students/Delete1" data-toggle="modal" data-target="#myModal2" onclick="AddDelete(@item.ID)">Delete</a>
+
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+            <br />
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of
+            @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index",new{page, sortOrder = ViewBag.CurrentSort, currentFilter =ViewBag.CurrentFilter}))
+      
+    </div>
+</div>
+
+<!-- Modal dialog -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Edit Student's Data
+                </h4>
+            </div>
+            <div class="modal-body" id="myModalBody">
+                
+            </div>
+            @*<div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                    Update Record
+                </button>
+            </div>*@
+        </div>
+    </div>
+</div>
+
+<!-- Modal dialog for Delete-->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Delete Student's Data
+                </h4>
+            </div>
+            <div class="modal-body" id="myModalBody2">
+
+            </div>
+            @*<div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary">
+                        Update Record
+                    </button>
+                </div>*@
+        </div>
+    </div>
+</div>
+
+<!-- Script for Edit-->
+    <script>
+        var AddEdit = function (id) {
+            console.log(id);
+            var url = "/Students/Edit1?id=" + id.toString();
+            $("#myModalBody").load(url, function () {
+                $("#myModal").modal("show");
+            })
+        }
+    </script>
+
+<!-- Script for Delete-->
+<script>
+        var AddDelete = function (id) {
+            console.log(id);
+            var url = "/Students/Delete1?id=" + id.toString();
+            $("#myModalBody2").load(url, function () {
+                $("#myModal2").modal("show");
+            })
+        }
+</script>

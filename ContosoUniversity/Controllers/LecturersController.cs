@@ -25,23 +25,29 @@ namespace ContosoUniversity.Controllers
             ViewBag.CourseCount = db.Courses.Count();
             ViewBag.LecturerCount = db.Lecturers.Count();
 
+
+
             var viewModel = new LecturerIndexData();
 
             viewModel.Lecturers = db.Lecturers
-                .Include(l => l.OfficeAssignment)
-                .Include(l => l.Courses.Select(c => c.Department))
-                .OrderBy(l => l.LastName);
+                                    .Include(l => l.OfficeAssignment)
+                                    .Include(l => l.Courses.Select(c => c.Department))
+                                    .OrderBy(l => l.LastName);
+
+            
 
             if (id != null)
             {
+                
                 ViewBag.LecturerID = id.Value;
-                ViewBag.Courses = viewModel.Lecturers.Where(i => i.ID == id.Value).Single().Courses;
+                
+                viewModel.Courses = viewModel.Lecturers.Where(i => i.ID == id.Value).Single().Courses;
             }
 
             if (courseID  != null)
             {
                 ViewBag.CourseID = courseID.Value;
-                ViewBag.Enrollments = viewModel.Courses.Where(x => x.CourseID == courseID.Value).Single().Enrollments;
+                viewModel.Enrollments = viewModel.Courses.Where(x => x.CourseID == courseID).Single().Enrollments;
 
             }
             return View(viewModel);
@@ -153,7 +159,7 @@ namespace ContosoUniversity.Controllers
                                     .Include(i => i.Courses)
                                     .Where(i => i.ID == id)
                                     .Single();
-            if (TryUpdateModel(lecturerToUpdate, "",new string[] { "LastName", "FirstMidName", "HireDate","OfficeAssignment" }))
+            if (TryUpdateModel(lecturerToUpdate, "",new string[] { "LastName", "FirstName", "HireDate","OfficeAssignment" }))
             {
                 try
                 {

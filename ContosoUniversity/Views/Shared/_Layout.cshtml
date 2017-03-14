@@ -28,6 +28,7 @@
                     <li>@Html.ActionLink("Lecturers", "Index", "Lecturers")</li>
                     <li>@Html.ActionLink("Departments", "Index", "Departments")</li>
                 </ul>
+                @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
@@ -78,12 +79,8 @@
                     <li><a href="/Lecturers">Lecturer</a></li>
                     <li><a href="/Departments">Department</a></li>
                 </ul>
-
-                <ul class="nav navbar-right navbar-nav">
-                    <li><a href="profile.html">Welcome, Caleb!</a></li>
-                    <li><a href="login.html">Logout</a></li>
-                </ul>
-            </div>
+                @Html.Partial("_LoginPartial")
+             </div>
         </div>
     </nav>
 
